@@ -1,17 +1,18 @@
-import { Layout, Button, Divider, Dropdown, Space,Avatar } from "antd";
+import { Layout, Button, Dropdown, Space, Avatar, theme } from "antd";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   MoonOutlined,
   SunOutlined,
-  DownOutlined,
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useTheme } from "../Context/ThemeContext";
+
 const { Header } = Layout;
 
 const Me = {
-  name: "Konan Loukou leo",
+  name: "Konan Loukou Leo",
   email: "leo@gmail.com",
 };
 
@@ -41,6 +42,9 @@ const items = [
 ];
 
 export default function HeaderComponent({ open, setOpen }) {
+  const { isdark, toggelTheme } = useTheme();
+  const { token } = theme.useToken();
+
   return (
     <Header
       style={{
@@ -49,33 +53,36 @@ export default function HeaderComponent({ open, setOpen }) {
         paddingRight: 28,
       }}
     >
-      <div className="flex  w-full  flex-row justify-between items-center border-b border-black/12 ">
+      <div className="flex w-full flex-row justify-between items-center border-b border-black/12">
         <div className="ml-2">
           <Button
             icon={open ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
             size="large"
             onClick={() => setOpen(!open)}
             style={{
-              backgroundColor: "rgba(255,255,255,0.5)",
-              border: "1px solid rgba(0,0,0,0.1)",
+              backgroundColor: token.colorBgContainer,
+              color: token.colorText,
+              border: `1px solid ${token.colorBorder}`,
             }}
           />
         </div>
+
         <div className="flex flex-row justify-between items-center gap-x-5 mr-3">
           <Button
-          className="active:scale-95"
-            icon={true ? <MoonOutlined /> : <SunOutlined />}
+            className="active:scale-95"
+            icon={!isdark ? <MoonOutlined /> : <SunOutlined />}
             size="large"
+            onClick={toggelTheme}
             style={{
               backgroundColor: "transparent",
               border: "1px solid rgba(0,0,0,0.2)",
             }}
-          ></Button>
-          <Dropdown menu={{ items }} >
-            <Space >
-              <Avatar  icon={<UserOutlined />}  size="large"/>
-            </Space>
-          </Dropdown>
+          />
+            <Dropdown menu={{ items }}>
+              <Space>
+                <Avatar icon={<UserOutlined />} size="large" />
+              </Space>
+            </Dropdown>
         </div>
       </div>
     </Header>
